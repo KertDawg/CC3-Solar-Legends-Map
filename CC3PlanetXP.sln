@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34408.163
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CC3PlanetXP", "CC3PlanetXP\CC3PlanetXP.vcxproj", "{784AA6E7-4D28-4504-9625-9176AA4037C3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{784AA6E7-4D28-4504-9625-9176AA4037C3}.Debug|x86.ActiveCfg = Debug|Win32
+		{784AA6E7-4D28-4504-9625-9176AA4037C3}.Debug|x86.Build.0 = Debug|Win32
+		{784AA6E7-4D28-4504-9625-9176AA4037C3}.Release|x86.ActiveCfg = Release|Win32
+		{784AA6E7-4D28-4504-9625-9176AA4037C3}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {10BFD953-D258-4E13-8520-413CA2FC3F2E}
+	EndGlobalSection
+EndGlobal
