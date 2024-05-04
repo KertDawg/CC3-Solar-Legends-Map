@@ -128,6 +128,10 @@ void XPCALL RunCreation()
 		//INSSYM <Symbol name> <x scale> <y scale> <rotation angle> <Insertion point…>
 		sprintf_s(Command, "SYMBOLC;D:\\ProgramData\\Profantasy\\CC3Plus\\Symbols\\Cosmographer\\Cos Bitmap A\\CosA_Planets_Traveller.FSC;%s;%.4f;%.4f;%.4f;%.4f,%.4f;_;", p.SymbolName, Scale, Scale, 0.0f, Location.x, Location.y);
 		ExecScriptCopy(Command);
+
+		//  Draw the orbit.
+		sprintf_s(Command, "COLOR;15;LWIDTH;2;CIRR;%.4f;%.4f,%.4f;;", p.RadiusOnMap, MapCenter.x, MapCenter.y);
+		ExecScriptCopy(Command);
 	}
 
 	delete PlanetsToDraw;
