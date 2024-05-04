@@ -9,6 +9,8 @@
 
 #undef IDD_DLGSOLARSYSTEMPARAMETERS
 
+#define RANDOM ((float)rand() / (float)RAND_MAX)
+
 
 char CList[] = "SOLARSYSTEM\0\0";
 PCMDPROC PList[] = { About, SetupDialog };
@@ -21,6 +23,8 @@ static unsigned int DayNumber = 1;
 static unsigned int MapWidth = 1;
 static unsigned int MapHeight = 1;
 static float OrbitalRadius = 100;
+static float PlanetScale = 4;
+static unsigned int DrawAsteroids = 1;
 
 
 /////////////  DllMain - XP initialization & Unload code //////////////
@@ -61,6 +65,8 @@ void XPCALL SetupDialog()
 	EDCTL(DialogHandle, IDC_FARTHESTPLANETNUMBER, 0, FT_UDec4, 6, &FarthestPlanetNumber, PlanetCountChange);
 	EDCTL(DialogHandle, IDC_DAYNUMBER, 0, FT_UDec4, 6, &DayNumber, DayNumberChange);
 	EDCTL(DialogHandle, IDC_ORBITALRADIUS, 0, FT_Dist4, 6, &OrbitalRadius, OrbitalRadiusChange);
+	EDCTL(DialogHandle, IDC_PLANETSCALE, 0, FT_Dist4, 6, &PlanetScale, PlanetScaleChange);
+	EDCTL(DialogHandle, IDC_DRAWASTEROIDS, 0, FT_UDec4, 6, &DrawAsteroids, DrawAsteroidsChange);
 	int DialogResult = XPDlog(DialogHandle, MyXP.ModHdl, 0);
 	RelDlg(DialogHandle);
 
@@ -92,6 +98,16 @@ static int XPCALL OrbitalRadiusChange(void)
 	return 0;
 }
 
+static int XPCALL PlanetScaleChange(void)
+{
+	return 0;
+}
+
+static int XPCALL DrawAsteroidsChange(void)
+{
+	return 0;
+}
+
 void XPCALL RunCreation()
 {
 	GPOINT2 MapCenter;
@@ -110,7 +126,7 @@ void XPCALL RunCreation()
 	MapCenter.y = (float)0;
 
 	// Draw the sun.
-	sprintf_s(Command, "SYMBOLC;D:\\ProgramData\\Profantasy\\CC3Plus\\Symbols\\Cosmographer\\Cos Bitmap A\\CosA_Stars_Traveller.FSC;CosA G Star 1;%.4f;%.4f;%.4f;%.4f,%.4f;_;", 4.0f, 4.0f, 0.0f, MapCenter.x, MapCenter.y);
+	sprintf_s(Command, "SYMBOLC;D:\\ProgramData\\Profantasy\\CC3Plus\\Symbols\\Cosmographer\\Cos Bitmap A\\CosA_Stars_Traveller.FSC;CosA G Star 1;%.4f;%.4f;%.4f;%.4f,%.4f;_;", PlanetScale, PlanetScale, 0.0f, MapCenter.x, MapCenter.y);
 	ExecScriptCopy(Command);
 
 	//  Set up the planets.
@@ -122,19 +138,69 @@ void XPCALL RunCreation()
 		//  Calculate the position.
 		Location.x = (p.RadiusOnMap * cosf(p.CurrentTheta)) + MapCenter.x;
 		Location.y = (p.RadiusOnMap * sinf(p.CurrentTheta)) + MapCenter.y;
-		Scale = 4 * p.Diameter;
+		Scale = PlanetScale * p.Diameter;
+
+		//  Draw the orbit.
+		sprintf_s(Command, "SSET;Planet Orbits;");
+		ExecScriptCopy(Command);
+		sprintf_s(Command, "COLOR;15;LWIDTH;2;CIRR;%.4f;%.4f,%.4f;;", p.RadiusOnMap, MapCenter.x, MapCenter.y);
+		ExecScriptCopy(Command);
 
 		//  Draw the planet.
 		//INSSYM <Symbol name> <x scale> <y scale> <rotation angle> <Insertion point…>
 		sprintf_s(Command, "SYMBOLC;D:\\ProgramData\\Profantasy\\CC3Plus\\Symbols\\Cosmographer\\Cos Bitmap A\\CosA_Planets_Traveller.FSC;%s;%.4f;%.4f;%.4f;%.4f,%.4f;_;", p.SymbolName, Scale, Scale, 0.0f, Location.x, Location.y);
 		ExecScriptCopy(Command);
+	}
 
-		//  Draw the orbit.
-		sprintf_s(Command, "COLOR;15;LWIDTH;2;CIRR;%.4f;%.4f,%.4f;;", p.RadiusOnMap, MapCenter.x, MapCenter.y);
+	//  Should we draw the asteroid belt?
+	if (DrawAsteroids)
+	{
+		//  Draw the circle.
+		sprintf_s(Command, "SSET;Asteroid Orbit;");
 		ExecScriptCopy(Command);
+		sprintf_s(Command, "COLOR;147;LSTYLE;0;LWIDTH;53;FSTYLE;1;CIRR;%.4f;%.4f,%.4f;;", 3*OrbitalRadius, MapCenter.x, MapCenter.y);
+		ExecScriptCopy(Command);
+
+		//  Draw asteroids.
+		Draw20Asteroids(3 * OrbitalRadius, PlanetScale);
+		Draw20Asteroids(3 * OrbitalRadius, PlanetScale);
+		Draw20Asteroids(3 * OrbitalRadius, PlanetScale);
+		Draw20Asteroids(3 * OrbitalRadius, PlanetScale);
+		Draw20Asteroids(3 * OrbitalRadius, PlanetScale);
 	}
 
 	delete PlanetsToDraw;
 	Redraw();
+	CmdEnd();
+}
+
+void XPCALL Draw20Asteroids(float BaseRadius, float BaseScale)
+{
+	char CommandSet[16384] = "";
+	char Command[500];
+	float Scale;
+	float Rotation;
+	float Theta;
+	float Radius;
+	GPOINT2 Location;
+	int AsteroidNumber;
+
+
+	for (int i = 0; i < 20; i++)
+	{
+		AsteroidNumber = floor(RANDOM * 2) + 1;
+		Scale = (((RANDOM * 2000) - 1000) / 1000) + BaseScale;
+		Rotation = (RANDOM * 35900) / 100;
+		Theta = (RANDOM * 35900) / 100;
+		Radius = (RANDOM * 120) + BaseRadius - 60;
+		Location.x = Radius * cos(Theta);
+		Location.y = Radius * sin(Theta);
+
+		//sprintf_s(Command, "INSSYM CosA Asteroid %d;%.4f;%.4f;%.4f;%.4f,%.4f;", AsteroidNumber, Scale, Scale, Rotation, Location.x, Location.y);
+		sprintf_s(Command, "SYMBOLC;D:\\ProgramData\\Profantasy\\CC3Plus\\Symbols\\Cosmographer\\Cos Bitmap A\\CosA_Planets_Traveller.FSC;CosA Asteroid %d;%.4f;%.4f;%.4f;%.4f,%.4f;_;", AsteroidNumber, Scale, Scale, Rotation, Location.x, Location.y);
+		strcat_s(CommandSet, Command);
+	}
+
+	ExecScriptCopy(CommandSet);
 	CmdEnd();
 }

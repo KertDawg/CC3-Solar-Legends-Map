@@ -16,3 +16,6 @@ static int XPCALL InitSetupDialog(void);
 static int XPCALL PlanetCountChange(void);
 static int XPCALL DayNumberChange(void);
 static int XPCALL OrbitalRadiusChange(void);
+static int XPCALL PlanetScaleChange(void);
+static int XPCALL DrawAsteroidsChange(void);
+static void XPCALL Draw20Asteroids(float BaseRadius, float BaseScale);
