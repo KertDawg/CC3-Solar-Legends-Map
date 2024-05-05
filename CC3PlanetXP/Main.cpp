@@ -128,6 +128,8 @@ void XPCALL RunCreation()
 	// Draw the sun.
 	sprintf_s(Command, "SYMBOLC;D:\\ProgramData\\Profantasy\\CC3Plus\\Symbols\\Cosmographer\\Cos Bitmap A\\CosA_Stars_Traveller.FSC;CosA G Star 1;%.4f;%.4f;%.4f;%.4f,%.4f;_;", PlanetScale, PlanetScale, 0.0f, MapCenter.x, MapCenter.y);
 	ExecScriptCopy(Command);
+	sprintf_s(Command, "SSET;Sun;");
+	ExecScriptCopy(Command);
 
 	//  Set up the planets.
 	PlanetsToDraw = new Planets(ClosestPlanetNumber, FarthestPlanetNumber, DayNumber, OrbitalRadius);
@@ -141,14 +143,16 @@ void XPCALL RunCreation()
 		Scale = PlanetScale * p.Diameter;
 
 		//  Draw the orbit.
-		sprintf_s(Command, "SSET;Planet Orbits;");
-		ExecScriptCopy(Command);
 		sprintf_s(Command, "COLOR;15;LWIDTH;2;CIRR;%.4f;%.4f,%.4f;;", p.RadiusOnMap, MapCenter.x, MapCenter.y);
+		ExecScriptCopy(Command);
+		sprintf_s(Command, "SSET;Planet Orbits;");
 		ExecScriptCopy(Command);
 
 		//  Draw the planet.
 		//INSSYM <Symbol name> <x scale> <y scale> <rotation angle> <Insertion point…>
 		sprintf_s(Command, "SYMBOLC;D:\\ProgramData\\Profantasy\\CC3Plus\\Symbols\\Cosmographer\\Cos Bitmap A\\CosA_Planets_Traveller.FSC;%s;%.4f;%.4f;%.4f;%.4f,%.4f;_;", p.SymbolName, Scale, Scale, 0.0f, Location.x, Location.y);
+		ExecScriptCopy(Command);
+		sprintf_s(Command, "SSET;Planets;");
 		ExecScriptCopy(Command);
 	}
 
@@ -156,9 +160,9 @@ void XPCALL RunCreation()
 	if (DrawAsteroids)
 	{
 		//  Draw the circle.
-		sprintf_s(Command, "SSET;Asteroid Orbit;");
+		sprintf_s(Command, "COLOR;147;LSTYLE;0;LWIDTH;53;FSTYLE;1;CIRR;%.4f;%.4f,%.4f;_;", 3*OrbitalRadius, MapCenter.x, MapCenter.y);
 		ExecScriptCopy(Command);
-		sprintf_s(Command, "COLOR;147;LSTYLE;0;LWIDTH;53;FSTYLE;1;CIRR;%.4f;%.4f,%.4f;;", 3*OrbitalRadius, MapCenter.x, MapCenter.y);
+		sprintf_s(Command, "SSET;Asteroid Orbit;");
 		ExecScriptCopy(Command);
 
 		//  Draw asteroids.
@@ -198,6 +202,8 @@ void XPCALL Draw20Asteroids(float BaseRadius, float BaseScale)
 
 		//sprintf_s(Command, "INSSYM CosA Asteroid %d;%.4f;%.4f;%.4f;%.4f,%.4f;", AsteroidNumber, Scale, Scale, Rotation, Location.x, Location.y);
 		sprintf_s(Command, "SYMBOLC;D:\\ProgramData\\Profantasy\\CC3Plus\\Symbols\\Cosmographer\\Cos Bitmap A\\CosA_Planets_Traveller.FSC;CosA Asteroid %d;%.4f;%.4f;%.4f;%.4f,%.4f;_;", AsteroidNumber, Scale, Scale, Rotation, Location.x, Location.y);
+		strcat_s(CommandSet, Command);
+		sprintf_s(Command, "SSET;Asteroids;");
 		strcat_s(CommandSet, Command);
 	}
 
