@@ -4,7 +4,7 @@ class Planet
 {
 public:
 	Planet();
-	void Set(char* PlanetName, float PlanetOrbitalRadius, float AngularSpeed, float StartingTheta, float PlanetDiameter, int CurrentDay, float RelativeSize, char *PlanetSymbolName, float SymbolPositionFudgeFactor);
+	void Set(char* PlanetName, float PlanetOrbitalRadius, float AngularSpeed, float StartingTheta, float PlanetDiameter, int CurrentDay, float RelativeSize, char *PlanetSymbolName, bool UseFudgeFactor);
 	void SetDayAndSize(int DayNumber, float RelativeSize);
 
 	float RadiusOnMap;

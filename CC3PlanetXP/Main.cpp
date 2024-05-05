@@ -18,12 +18,12 @@ PCMDPROC PList[] = { About, SetupDialog };
 XP MyXP = { 0, CList, PList, 0, 0, 0, XPID, 0, 620, 0, 0, 620 };
 
 static unsigned int ClosestPlanetNumber = 1;
-static unsigned int FarthestPlanetNumber = 8;
+static unsigned int FarthestPlanetNumber = 5;
 static unsigned int DayNumber = 1;
 static unsigned int MapWidth = 1;
 static unsigned int MapHeight = 1;
 static float OrbitalRadius = 100;
-static float PlanetScale = 4;
+static float PlanetScale = 2;
 static unsigned int DrawAsteroids = 1;
 
 
@@ -119,6 +119,7 @@ void XPCALL RunCreation()
 	char Command[500];
 	char Temp[30];
 	float Scale;
+	float FudgeFactor;
 
 
 	//  Get the dimensions, etc.
@@ -138,8 +139,9 @@ void XPCALL RunCreation()
 	for (Planet p : PlanetsToDraw->ListOfPlanets)
 	{
 		//  Calculate the position.
-		Location.x = (p.RadiusOnMap * cosf(p.CurrentTheta) * p.PositionFudgeFactor) + MapCenter.x;
-		Location.y = (p.RadiusOnMap * sinf(p.CurrentTheta) * p.PositionFudgeFactor) + MapCenter.y;
+		FudgeFactor = ((p.PositionFudgeFactor == 1) ? p.PositionFudgeFactor : ( p.PositionFudgeFactor + (-0.4 * ((PlanetScale / 4) - 1))) );
+		Location.x = (p.RadiusOnMap * cosf(p.CurrentTheta) * FudgeFactor) + MapCenter.x;
+		Location.y = (p.RadiusOnMap * sinf(p.CurrentTheta) * FudgeFactor) + MapCenter.y;
 		Scale = PlanetScale * p.Diameter;
 
 		//  Draw the orbit.
