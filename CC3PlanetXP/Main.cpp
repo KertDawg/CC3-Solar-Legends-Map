@@ -138,8 +138,8 @@ void XPCALL RunCreation()
 	for (Planet p : PlanetsToDraw->ListOfPlanets)
 	{
 		//  Calculate the position.
-		Location.x = (p.RadiusOnMap * cosf(p.CurrentTheta)) + MapCenter.x;
-		Location.y = (p.RadiusOnMap * sinf(p.CurrentTheta)) + MapCenter.y;
+		Location.x = (p.RadiusOnMap * cosf(p.CurrentTheta) * p.PositionFudgeFactor) + MapCenter.x;
+		Location.y = (p.RadiusOnMap * sinf(p.CurrentTheta) * p.PositionFudgeFactor) + MapCenter.y;
 		Scale = PlanetScale * p.Diameter;
 
 		//  Draw the orbit.
