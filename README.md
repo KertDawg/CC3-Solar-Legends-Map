@@ -1,6 +1,8 @@
 # CC3-Solar-Legends-Map
 A Campaign Cartographer XP add-on to generate a solar system map for Solar Legends
 
+![Options Dialog](/Images/DemoMap.jpg)
+
 ## Solar Legends
 Solar Legends is a tabletop roleplaying game.  You can find it [here](https://solarlegends.kertdawg.net/).  It uses a solar system map that changes over time.  The planets orbit the sun.  This map represents that movement.
 
@@ -18,6 +20,8 @@ This guide assumes Visual Studio 2022 Community.  VS 2019 should also work with 
 
 ##  Using it
 This will generate a map for a given day in the Solar Legends game.  The dialog box shows the following options:
+
+![Options Dialog](/Images/Options.png)
 
 | Option | Description |
 | --- | --- |
