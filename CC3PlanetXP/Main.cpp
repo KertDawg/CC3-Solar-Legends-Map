@@ -25,6 +25,7 @@ static unsigned int MapHeight = 1;
 static float OrbitalRadius = 100;
 static float PlanetScale = 2;
 static unsigned int DrawAsteroids = 1;
+static unsigned int DrawLabels = 1;
 
 
 /////////////  DllMain - XP initialization & Unload code //////////////
@@ -159,6 +160,14 @@ void XPCALL RunCreation()
 		ExecScriptCopy(Command);
 		sprintf_s(Command, "SSET;Planets;");
 		ExecScriptCopy(Command);
+
+		//  Draw the label.
+		if (DrawLabels)
+		{
+			Location.y -= (15 * (p.Diameter + 1));
+			sprintf_s(Command, "TSPECH;15;TSPECJ;4;COLOR;15;TEXM;%s;%.4f,%.4f;", p.Name, Location.x, Location.y);
+			ExecScriptCopy(Command);
+		}
 	}
 
 	//  Should we draw the asteroid belt?
