@@ -19,28 +19,21 @@ This guide assumes Visual Studio 2022 Community.  VS 2019 should also work with 
 ##  Using it
 This will generate a map for a given day in the Solar Legends game.  The dialog box shows the following options:
 
-Closest Planet Number
+**Closest Planet Number**
 : This is the index of the innermost planet to draw.  1 is for Mercury, 2 is for Venus, etc.
-
-Farthest Planet Number
+**Farthest Planet Number**
 : This is the index of the outermost planet to draw.
-
-Day Number
+**Day Number**
 : This is the day of the campaign.  Start on Day 1.  If the players are on a rocket ship for 10 days, then the next map will be day 11.
-
-Orbital Radius
+**Orbital Radius**
 : This is a measure of how big the map is.  A value of 1,000 will show the inner planets and the asteroid belt.  A value of 500 will show the belt out to Saturn.  The higher the number, the closer the view will be to the sun.
-
-Planet Scale
+**Planet Scale**
 : This is how big the symbols that represent the planets are.  The larger the number, the larger the planets will appear.
-
-Draw Asteroids
+**Draw Asteroids**
 : Should we draw the asteroid belt?
-
-Draw Labels
+**Draw Labels**
 : Should we draw the text labels under each planet?
-
-Draw Scale
+**Draw Scale**
 : Should we draw the map scale showing distance in days of fuel?
 
 When you have selecetd your option, hit `OK` and the map will be drawn.  It is suggested that you turn on `Sheet Effects` to see things correctly.  **DON'T SAVE OVER THE BASE MAP!!!**  Remember to `Save As...` to save this as a different file.
