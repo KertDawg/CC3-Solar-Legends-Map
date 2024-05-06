@@ -16,7 +16,7 @@ Planet::Planet()
 	Diameter = 0;
 }
 
-void Planet::Set(char* PlanetName, float PlanetOrbitalRadius, float PlanetPeriodInDays, float PlanetStartingTheta, float PlanetDiameter, int CurrentDay, float RelativeSize, char *PlanetSymbolName, bool UseFudgeFactor)
+void Planet::Set(char* PlanetName, float PlanetOrbitalRadius, float PlanetPeriodInDays, float PlanetStartingTheta, float PlanetDiameter, int CurrentDay, float RelativeSize, char *PlanetSymbolName)
 {
 	strcpy_s(Name, PlanetName);
 	strcpy_s(SymbolName, PlanetSymbolName);
@@ -26,15 +26,6 @@ void Planet::Set(char* PlanetName, float PlanetOrbitalRadius, float PlanetPeriod
 	RadiusOnMap = 1.0f;
 	CurrentTheta = 0.0f;
 	Diameter = PlanetDiameter;
-
-	//  Set the position fudge factor.
-	//  0.145
-	//  100 -> 0.1425 * 4 * 100/100 = 0.57
-	//  80 -> 0.475
-	//  60 -> 0.3
-	//  50 -> 0.15
-	//  y = 0.6034 * ln(x) - 2.1897
-	PositionFudgeFactor = UseFudgeFactor ? (0.6034 * logf(RelativeSize) - 2.1897) : 1;
 
 	SetDayAndSize(CurrentDay, RelativeSize);
 }

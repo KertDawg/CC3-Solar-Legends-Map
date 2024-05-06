@@ -126,8 +126,12 @@ void XPCALL RunCreation()
 	MapCenter.x = (float)0;
 	MapCenter.y = (float)0;
 
+	//  Load the symbols.
+	sprintf_s(Command, "CATALOG;$Solar Legends Symbols.FSC;");
+	ExecScriptCopy(Command);
+
 	// Draw the sun.
-	sprintf_s(Command, "SYMBOLC;D:\\ProgramData\\Profantasy\\CC3Plus\\Symbols\\Cosmographer\\Cos Bitmap A\\CosA_Stars_Traveller.FSC;CosA G Star 1;%.4f;%.4f;%.4f;%.4f,%.4f;_;", PlanetScale, PlanetScale, 0.0f, MapCenter.x, MapCenter.y);
+	sprintf_s(Command, "SYMBOLC;$Solar Legends Symbols.FSC;Sun;%.4f;%.4f;%.4f;%.4f,%.4f;_;", PlanetScale, PlanetScale, 0.0f, MapCenter.x, MapCenter.y);
 	ExecScriptCopy(Command);
 	sprintf_s(Command, "SSET;Sun;");
 	ExecScriptCopy(Command);
@@ -139,9 +143,8 @@ void XPCALL RunCreation()
 	for (Planet p : PlanetsToDraw->ListOfPlanets)
 	{
 		//  Calculate the position.
-		FudgeFactor = ((p.PositionFudgeFactor == 1) ? p.PositionFudgeFactor : ( p.PositionFudgeFactor + (-0.4 * ((PlanetScale / 4) - 1))) );
-		Location.x = (p.RadiusOnMap * cosf(p.CurrentTheta) * FudgeFactor) + MapCenter.x;
-		Location.y = (p.RadiusOnMap * sinf(p.CurrentTheta) * FudgeFactor) + MapCenter.y;
+		Location.x = (p.RadiusOnMap * cosf(p.CurrentTheta)) + MapCenter.x;
+		Location.y = (p.RadiusOnMap * sinf(p.CurrentTheta)) + MapCenter.y;
 		Scale = PlanetScale * p.Diameter;
 
 		//  Draw the orbit.
@@ -152,7 +155,7 @@ void XPCALL RunCreation()
 
 		//  Draw the planet.
 		//INSSYM <Symbol name> <x scale> <y scale> <rotation angle> <Insertion point…>
-		sprintf_s(Command, "SYMBOLC;D:\\ProgramData\\Profantasy\\CC3Plus\\Symbols\\Cosmographer\\Cos Bitmap A\\CosA_Planets_Traveller.FSC;%s;%.4f;%.4f;%.4f;%.4f,%.4f;_;", p.SymbolName, Scale, Scale, 0.0f, Location.x, Location.y);
+		sprintf_s(Command, "SYMBOLC;$Solar Legends Symbols.FSC;%s;%.4f;%.4f;%.4f;%.4f,%.4f;_;", p.SymbolName, Scale, Scale, 0.0f, Location.x, Location.y);
 		ExecScriptCopy(Command);
 		sprintf_s(Command, "SSET;Planets;");
 		ExecScriptCopy(Command);
@@ -168,11 +171,11 @@ void XPCALL RunCreation()
 		ExecScriptCopy(Command);
 
 		//  Draw asteroids.
-		Draw20Asteroids(3 * OrbitalRadius, PlanetScale);
-		Draw20Asteroids(3 * OrbitalRadius, PlanetScale);
-		Draw20Asteroids(3 * OrbitalRadius, PlanetScale);
-		Draw20Asteroids(3 * OrbitalRadius, PlanetScale);
-		Draw20Asteroids(3 * OrbitalRadius, PlanetScale);
+		Draw20Asteroids(OrbitalRadius, PlanetScale);
+		Draw20Asteroids(OrbitalRadius, PlanetScale);
+		Draw20Asteroids(OrbitalRadius, PlanetScale);
+		Draw20Asteroids(OrbitalRadius, PlanetScale);
+		Draw20Asteroids(OrbitalRadius, PlanetScale);
 	}
 
 	delete PlanetsToDraw;
@@ -188,24 +191,29 @@ void XPCALL Draw20Asteroids(float BaseRadius, float BaseScale)
 	float Rotation;
 	float Theta;
 	float Radius;
+	float RadiusBandWidth;
 	GPOINT2 Location;
 	int AsteroidNumber;
+
+	//  100 => 200
+	//  50 => 100
 
 
 	for (int i = 0; i < 20; i++)
 	{
 		AsteroidNumber = floor(RANDOM * 2) + 1;
-		Scale = (((RANDOM * 2000) - 1000) / 1000) + BaseScale;
+		Scale = ((((RANDOM * 2000) - 1000) / 1000) + BaseScale) / 2;
 		Rotation = (RANDOM * 35900) / 100;
 		Theta = (RANDOM * 35900) / 100;
-		Radius = (RANDOM * 120) + BaseRadius - 60;
+		RadiusBandWidth = BaseRadius;
+		Radius = (RANDOM * RadiusBandWidth) + (BaseRadius * 3) - (RadiusBandWidth / 2);
 		Location.x = Radius * cos(Theta);
 		Location.y = Radius * sin(Theta);
 
 		//sprintf_s(Command, "INSSYM CosA Asteroid %d;%.4f;%.4f;%.4f;%.4f,%.4f;", AsteroidNumber, Scale, Scale, Rotation, Location.x, Location.y);
-		sprintf_s(Command, "SYMBOLC;D:\\ProgramData\\Profantasy\\CC3Plus\\Symbols\\Cosmographer\\Cos Bitmap A\\CosA_Planets_Traveller.FSC;CosA Asteroid %d;%.4f;%.4f;%.4f;%.4f,%.4f;_;", AsteroidNumber, Scale, Scale, Rotation, Location.x, Location.y);
-		strcat_s(CommandSet, Command);
 		sprintf_s(Command, "SSET;Asteroids;");
+		strcat_s(CommandSet, Command);
+		sprintf_s(Command, "SYMBOLC;$Solar Legends Symbols.FSC;Asteroid %d;%.4f;%.4f;%.4f;%.4f,%.4f;_;", AsteroidNumber, Scale, Scale, Rotation, Location.x, Location.y);
 		strcat_s(CommandSet, Command);
 	}
 
