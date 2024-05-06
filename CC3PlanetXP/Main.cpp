@@ -24,9 +24,9 @@ static unsigned int MapWidth = 1;
 static unsigned int MapHeight = 1;
 static float OrbitalRadius = 100;
 static float PlanetScale = 2;
-static unsigned int DrawAsteroids = 1;
-static unsigned int DrawLabels = 1;
-static unsigned int DrawScale = 1;
+static bool DrawAsteroids = true;
+static bool DrawLabels = true;
+static bool DrawScale = true;
 
 
 /////////////  DllMain - XP initialization & Unload code //////////////
@@ -68,7 +68,9 @@ void XPCALL SetupDialog()
 	EDCTL(DialogHandle, IDC_DAYNUMBER, 0, FT_UDec4, 6, &DayNumber, DayNumberChange);
 	EDCTL(DialogHandle, IDC_ORBITALRADIUS, 0, FT_Dist4, 6, &OrbitalRadius, OrbitalRadiusChange);
 	EDCTL(DialogHandle, IDC_PLANETSCALE, 0, FT_Dist4, 6, &PlanetScale, PlanetScaleChange);
-	EDCTL(DialogHandle, IDC_DRAWASTEROIDS, 0, FT_UDec4, 6, &DrawAsteroids, DrawAsteroidsChange);
+	CHKCTL(DialogHandle, IDC_DRAWASTEROIDS, 0, FT_UDec1, &DrawAsteroids, 1, DrawAsteroidsChange);
+	CHKCTL(DialogHandle, IDC_DRAWLABELS, 0, FT_UDec1, &DrawLabels, 1, DrawLabelsChange);
+	CHKCTL(DialogHandle, IDC_DRAWSCALE, 0, FT_UDec1, &DrawScale, 1, DrawScaleChange);
 	int DialogResult = XPDlog(DialogHandle, MyXP.ModHdl, 0);
 	RelDlg(DialogHandle);
 
@@ -106,6 +108,16 @@ static int XPCALL PlanetScaleChange(void)
 }
 
 static int XPCALL DrawAsteroidsChange(void)
+{
+	return 0;
+}
+
+static int XPCALL DrawLabelsChange(void)
+{
+	return 0;
+}
+
+static int XPCALL DrawScaleChange(void)
 {
 	return 0;
 }

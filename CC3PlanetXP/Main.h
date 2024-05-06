@@ -18,4 +18,6 @@ static int XPCALL DayNumberChange(void);
 static int XPCALL OrbitalRadiusChange(void);
 static int XPCALL PlanetScaleChange(void);
 static int XPCALL DrawAsteroidsChange(void);
+static int XPCALL DrawLabelsChange(void);
+static int XPCALL DrawScaleChange(void);
 static void XPCALL Draw20Asteroids(float BaseRadius, float BaseScale);
