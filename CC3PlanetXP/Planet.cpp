@@ -21,7 +21,7 @@ void Planet::Set(char* PlanetName, float PlanetOrbitalRadius, float PlanetPeriod
 	strcpy_s(Name, PlanetName);
 	strcpy_s(SymbolName, PlanetSymbolName);
 	OrbitalRadius = PlanetOrbitalRadius;
-	AngularSpeed = (365.26  * M_2_PI) / PlanetPeriodInDays;  //  radians/day
+	AngularSpeed = (2 * M_PI) / PlanetPeriodInDays;  //  radians/day
 	StartingTheta = (PlanetStartingTheta * M_PI) / 180;  //  Convert degrees to radians
 	RadiusOnMap = 1.0f;
 	CurrentTheta = 0.0f;
