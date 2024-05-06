@@ -78,7 +78,7 @@ Planets::Planets(int ClosestPlanet, int FarthestPlanet, int SystemCurrentDay, fl
 
 		default:
 			OnePlanet = new Planet();
-			OnePlanet->Set("Earth", 1.0f, 1.0f, 160, 1, CurrentDay, ReloativeSize, "Earth");
+			OnePlanet->Set("Earth", 1.0f, 365.26f, 160, 1, CurrentDay, ReloativeSize, "Earth");
 			ListOfPlanets.push_back(*OnePlanet);
 		}
 	}
