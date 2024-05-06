@@ -1,7 +1,7 @@
 # CC3-Solar-Legends-Map
 A Campaign Cartographer XP add-on to generate a solar system map for Solar Legends
 
-![Options Dialog](/Images/DemoMap.jpg)
+![Options Dialog](/Images/DemoMap.png)
 
 ## Solar Legends
 Solar Legends is a tabletop roleplaying game.  You can find it [here](https://solarlegends.kertdawg.net/).  It uses a solar system map that changes over time.  The planets orbit the sun.  This map represents that movement.
