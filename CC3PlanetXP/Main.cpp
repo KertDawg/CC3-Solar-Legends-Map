@@ -26,6 +26,7 @@ static float OrbitalRadius = 100;
 static float PlanetScale = 2;
 static unsigned int DrawAsteroids = 1;
 static unsigned int DrawLabels = 1;
+static unsigned int DrawScale = 1;
 
 
 /////////////  DllMain - XP initialization & Unload code //////////////
@@ -117,6 +118,7 @@ void XPCALL RunCreation()
 	Planet* p;
 	pENTREC EntRec;
 	SYMTMAT Mat;
+	char CommandSet[16384] = "";
 	char Command[500];
 	char Temp[30];
 	float Scale;
@@ -185,6 +187,61 @@ void XPCALL RunCreation()
 		Draw20Asteroids(OrbitalRadius, PlanetScale);
 		Draw20Asteroids(OrbitalRadius, PlanetScale);
 		Draw20Asteroids(OrbitalRadius, PlanetScale);
+	}
+
+	//  Should we draw a scale?
+	if (DrawScale)
+	{
+		GPOINT2 ScaleStart;
+		GPOINT2 ScaleEnd;
+		float BigTickHeight;
+		float SmallTickHeight;
+		float DayDistance;
+		float DayLineX;
+		int DayNumber = 0;
+		int DaysToLabel;
+
+
+		ScaleStart.x = 100;
+		ScaleStart.y = -400;
+		ScaleEnd.x = 300;
+		ScaleEnd.y = -400;
+		BigTickHeight = 20;
+		SmallTickHeight = 10;
+
+		//  Draw base scale.
+		strcat_s(CommandSet, "SSET;Scale;COLOR;15;LSTYLE;0;LWIDTH;2;FSTYLE;1;");
+		sprintf_s(Command, "LINE;%.4f,%.4f;%.4f,%.4f;_;", ScaleStart.x, ScaleStart.y, ScaleEnd.x, ScaleEnd.y);
+		strcat_s(CommandSet, Command);
+		sprintf_s(Command, "LINE;%.4f,%.4f;%.4f,%.4f;_;", ScaleStart.x, ScaleStart.y - BigTickHeight, ScaleStart.x, ScaleStart.y + BigTickHeight);
+		strcat_s(CommandSet, Command);
+		sprintf_s(Command, "LINE;%.4f,%.4f;%.4f,%.4f;_;", ScaleEnd.x, ScaleEnd.y - BigTickHeight, ScaleEnd.x, ScaleEnd.y + BigTickHeight);
+		strcat_s(CommandSet, Command);
+
+		//  Draw the text.
+		sprintf_s(Command, "TSPECH;30;TSPECJ;4;COLOR;15;TEXM;Days;%.4f,%.4f;", ScaleStart.x + 100, ScaleStart.y + 40);
+		strcat_s(CommandSet, Command);
+
+		//  Draw day lines.
+		DayDistance = OrbitalRadius * 32 / 100;
+		DaysToLabel = floor(64 / DayDistance);
+		strcat_s(CommandSet, "LWIDTH;1;");
+
+		for (int i = DayDistance; i <= 200; i += DayDistance)
+		{
+			DayNumber++;
+			DayLineX = ScaleStart.x + i;
+			sprintf_s(Command, "LINE;%.4f,%.4f;%.4f,%.4f;_;", DayLineX, ScaleStart.y - SmallTickHeight, DayLineX, ScaleStart.y + SmallTickHeight);
+			strcat_s(CommandSet, Command);
+
+			if (!(DayNumber % DaysToLabel))
+			{
+				sprintf_s(Command, "TSPECH;12;TSPECJ;4;COLOR;15;TEXM;%d;%.4f,%.4f;", DayNumber, DayLineX, ScaleStart.y - 40);
+				strcat_s(CommandSet, Command);
+			}
+		}
+
+		ExecScriptCopy(CommandSet);
 	}
 
 	delete PlanetsToDraw;
