@@ -27,6 +27,7 @@ static float PlanetScale = 2;
 static bool DrawAsteroids = true;
 static bool DrawLabels = true;
 static bool DrawScale = true;
+static char SymbolCatalogPath[100];
 
 
 /////////////  DllMain - XP initialization & Unload code //////////////
@@ -137,6 +138,13 @@ void XPCALL RunCreation()
 	float FudgeFactor;
 
 
+	//  Set the symbol catalog path.
+#if defined _DEBUG
+	strcpy_s(SymbolCatalogPath, "$Solar Legends Symbols.FSC");
+#else
+	strcpy_s(SymbolCatalogPath, "@Symbols\\User\\SolarLegends\\Solar Legends Symbols.FSC");
+#endif
+
 	//  Get the dimensions, etc.
 	MapCenter.x = (float)0;
 	MapCenter.y = (float)0;
@@ -146,7 +154,7 @@ void XPCALL RunCreation()
 	ExecScriptCopy(Command);
 
 	// Draw the sun.
-	sprintf_s(Command, "SYMBOLC;$Solar Legends Symbols.FSC;Sun;%.4f;%.4f;%.4f;%.4f,%.4f;_;", PlanetScale, PlanetScale, 0.0f, MapCenter.x, MapCenter.y);
+	sprintf_s(Command, "SYMBOLC;%s;Sun;%.4f;%.4f;%.4f;%.4f,%.4f;_;", SymbolCatalogPath, PlanetScale, PlanetScale, 0.0f, MapCenter.x, MapCenter.y);
 	ExecScriptCopy(Command);
 	sprintf_s(Command, "SSET;Sun;");
 	ExecScriptCopy(Command);
@@ -170,7 +178,7 @@ void XPCALL RunCreation()
 
 		//  Draw the planet.
 		//INSSYM <Symbol name> <x scale> <y scale> <rotation angle> <Insertion point…>
-		sprintf_s(Command, "SYMBOLC;$Solar Legends Symbols.FSC;%s;%.4f;%.4f;%.4f;%.4f,%.4f;_;", p.SymbolName, Scale, Scale, 0.0f, Location.x, Location.y);
+		sprintf_s(Command, "SYMBOLC;%s;%s;%.4f;%.4f;%.4f;%.4f,%.4f;_;", SymbolCatalogPath, p.SymbolName, Scale, Scale, 0.0f, Location.x, Location.y);
 		ExecScriptCopy(Command);
 		sprintf_s(Command, "SSET;Planets;");
 		ExecScriptCopy(Command);
@@ -291,7 +299,7 @@ void XPCALL Draw20Asteroids(float BaseRadius, float BaseScale)
 		//sprintf_s(Command, "INSSYM CosA Asteroid %d;%.4f;%.4f;%.4f;%.4f,%.4f;", AsteroidNumber, Scale, Scale, Rotation, Location.x, Location.y);
 		sprintf_s(Command, "SSET;Asteroids;");
 		strcat_s(CommandSet, Command);
-		sprintf_s(Command, "SYMBOLC;$Solar Legends Symbols.FSC;Asteroid %d;%.4f;%.4f;%.4f;%.4f,%.4f;_;", AsteroidNumber, Scale, Scale, Rotation, Location.x, Location.y);
+		sprintf_s(Command, "SYMBOLC;%s;Asteroid %d;%.4f;%.4f;%.4f;%.4f,%.4f;_;", SymbolCatalogPath, AsteroidNumber, Scale, Scale, Rotation, Location.x, Location.y);
 		strcat_s(CommandSet, Command);
 	}
 
