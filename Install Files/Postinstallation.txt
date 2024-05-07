@@ -1,0 +1,9 @@
+To run the map creator:
+
+1. Start CC3+.
+2. Create a new map (File -> New...)
+3. Choose Map type "Cosmographer"
+4. Choose "Pick a pre-defined template"
+5. Select "Solar Legends Base Map.FCT"
+6. Type SOLARSYSTEM.
+7. Fill out the form and enjoy your map.
