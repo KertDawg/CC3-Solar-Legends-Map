@@ -43,7 +43,6 @@ Source: "Symbols\*"; DestDir: "{code:GetAssetsInstallationPath}\Symbols\User\Sol
 function GetBinariesInstallationPath(Param: String): string;
 var
   Value: string;
-  IniLines: TArrayOfString;
 begin
   if RegQueryStringValue(
        HKEY_CURRENT_USER, 'Software\EvolutionComputing\CampaignCartographer3Plus',
