@@ -17,7 +17,7 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName={code:GetBaseInstallationPath}
+DefaultDirName={code:GetBinariesInstallationPath}
 DefaultGroupName={#MyAppName}
 InfoBeforeFile=D:\Code\CC3\CC3PlanetXP\CC3-Solar-Legends-Map\Install Files\Preinstallation.txt
 InfoAfterFile=D:\Code\CC3\CC3PlanetXP\CC3-Solar-Legends-Map\Install Files\Postinstallation.txt
@@ -33,13 +33,31 @@ DirExistsWarning=no
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
-Source: "Solar Legends Base Map.FCT"; DestDir: "{code:GetBaseInstallationPath}\Templates\Cosmographer"
-Source: "Solar Legends Symbols.FSC"; DestDir: "{code:GetBaseInstallationPath}\Symbols\User\SolarLegends"
-Source: "Symbols\*"; DestDir: "{code:GetBaseInstallationPath}\Symbols\User\SolarLegends\Symbols"
+Source: "..\Release\CC3PlanetXP.dll"; DestDir: "{code:GetBinariesInstallationPath}"
+Source: "Solar Legends Base Map.FCT"; DestDir: "{code:GetAssetsInstallationPath}\Templates\Cosmographer"
+Source: "Solar Legends Symbols.FSC"; DestDir: "{code:GetAssetsInstallationPath}\Symbols\User\SolarLegends"
+Source: "Symbols\*"; DestDir: "{code:GetAssetsInstallationPath}\Symbols\User\SolarLegends\Symbols"
 
 [Code]
 
-function GetBaseInstallationPath(Param: String): string;
+function GetBinariesInstallationPath(Param: String): string;
+var
+  Value: string;
+  IniLines: TArrayOfString;
+begin
+  if RegQueryStringValue(
+       HKEY_CURRENT_USER, 'Software\EvolutionComputing\CampaignCartographer3Plus',
+       'AppPath', Value) then
+  begin
+    Result := Value;
+  end
+    else
+  begin
+    Result := 'C:\Program Files (x86)\ProFantasy\CC3Plus';
+  end;
+end;
+
+function GetAssetsInstallationPath(Param: String): string;
 var
   Value: string;
   IniLines: TArrayOfString;
